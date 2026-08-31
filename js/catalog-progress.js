@@ -1,3 +1,2 @@
-export * from "./catalog-world.js";
 export * from "./catalog-meta.js";
 export * from "./catalog-missions.js";
