@@ -1,0 +1,12 @@
+@media (max-width: 899px) {
+  .sidebar { display: none; }
+  .bottom-nav { display: flex; }
+  .screen-host { padding-bottom: 8px; }
+  .btn, .nav-btn, .plot, .tab { touch-action: manipulation; }
+}
+
+@media (max-width: 380px) {
+  .brand strong { font-size: 11px; }
+  .grid-3 { grid-template-columns: 1fr 1fr; }
+  .chip-value { font-size: 12px; }
+}

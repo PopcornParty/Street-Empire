@@ -1,0 +1,24 @@
+@media (min-width: 900px) {
+  #app {
+    grid-template-columns: 220px 1fr;
+    grid-template-rows: calc(var(--top-h) + var(--safe-t)) 1fr;
+  }
+  .topbar { grid-column: 1 / -1; }
+  .sidebar {
+    display: block;
+    border-right: 1px solid var(--line);
+    background: rgba(8, 12, 24, 0.7);
+    overflow: auto;
+    padding: 12px;
+  }
+  .bottom-nav { display: none; }
+  .screen-host { padding: 18px 22px 28px; }
+  .side-nav { display: flex; flex-direction: column; gap: 6px; }
+  .side-nav .nav-btn {
+    flex-direction: row; justify-content: flex-start; gap: 10px;
+    min-height: 44px; padding: 8px 10px; border-radius: 12px; font-size: 13px;
+  }
+  .side-nav .nav-btn.active { background: var(--glass); color: var(--gold); }
+  .modal-backdrop { align-items: center; }
+  .sheet { border-radius: 20px; margin-bottom: 0; max-height: 80vh; }
+}
