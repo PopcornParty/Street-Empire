@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=1" />
+  <meta name="theme-color" content="#0b1020" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <title>STREET EMPIRE</title>
+  <link rel="stylesheet" href="css/main.css" />
+  <link rel="stylesheet" href="css/animations.css" />
+  <link rel="stylesheet" href="css/map.css" />
+  <link rel="stylesheet" href="css/menus.css" />
+  <link rel="stylesheet" href="css/mobile.css" />
+  <link rel="stylesheet" href="css/desktop.css" />
+</head>
+<body>
+  <div id="app">
+    <header class="topbar">
+      <div class="brand">
+        <span class="logo-mark">SE</span>
+        <div>
+          <strong>STREET EMPIRE</strong>
+          <small id="empire-title">Beginner</small>
+        </div>
+      </div>
+      <div class="top-stats">
+        <button class="stat-chip" id="cash-chip" type="button" title="Cash">
+          <span class="chip-label">CASH</span>
+          <span class="chip-value" id="cash-display">$10,000</span>
+        </button>
+        <button class="stat-chip" id="income-chip" type="button" title="Income">
+          <span class="chip-label">/HR</span>
+          <span class="chip-value" id="income-display">$0</span>
+        </button>
+      </div>
+    </header>
+
+    <aside class="sidebar" id="sidebar">
+      <nav class="side-nav" id="side-nav"></nav>
+    </aside>
+
+    <main class="screen-host" id="screen-host"></main>
+
+    <nav class="bottom-nav" id="bottom-nav"></nav>
+
+    <div id="toast-host" class="toast-host" aria-live="polite"></div>
+    <div id="modal-host"></div>
+    <div id="tutorial-host"></div>
+    <div id="fx-host"></div>
+  </div>
+
+  <script type="module" src="js/main.js"></script>
+</body>
+</html>
