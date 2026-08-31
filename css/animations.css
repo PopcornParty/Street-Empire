@@ -1,0 +1,13 @@
+@keyframes slideDown { from { transform: translateY(-12px); opacity: 0; } to { transform: none; opacity: 1; } }
+@keyframes pop { 0% { transform: scale(.86); opacity: 0; } 70% { transform: scale(1.04); } 100% { transform: scale(1); opacity: 1; } }
+@keyframes pulseGold { 0%,100% { box-shadow: 0 0 0 0 rgba(245,193,74,.45);} 50% { box-shadow: 0 0 0 10px rgba(245,193,74,0);} }
+@keyframes floatUp { from { transform: translateY(0); opacity:1;} to { transform: translateY(-40px); opacity:0;} }
+@keyframes npcWalk { 0%{transform:translate(0,0);} 50%{transform:translate(18px,-8px);} 100%{transform:translate(0,0);} }
+@keyframes carDrive { 0%{left:-8%;} 100%{left:108%;} }
+@keyframes skylinePulse { 0%,100%{filter:brightness(1);} 50%{filter:brightness(1.18);} }
+@keyframes unlockBurst { 0%{transform:scale(.6);opacity:0;} 40%{transform:scale(1.05);opacity:1;} 100%{transform:scale(1);} }
+.celebrate { animation: pop .4s ease; }
+.pulse { animation: pulseGold 1.6s infinite; }
+#fx-host .level-banner { pointer-events: auto; }
+.level-banner { position:absolute; inset:0; display:grid; place-items:center; background:rgba(4,8,18,.72); }
+.level-banner .inner { animation:unlockBurst .55s ease; background:linear-gradient(135deg,#1b1633,#122033); border:1px solid rgba(245,193,74,.4); padding:22px; border-radius:20px; text-align:center; min-width:240px; }

@@ -1,0 +1,25 @@
+.dash-hero { background:linear-gradient(135deg,rgba(245,193,74,.14),rgba(77,226,200,.06)); border:1px solid var(--line); border-radius:18px; padding:16px; margin-bottom:12px; }
+.kpi { background:var(--glass); border-radius:14px; padding:10px; }
+.kpi b { display:block; font-size:15px; }
+.kpi span { font-size:10px; color:var(--muted); }
+.quick { display:grid; grid-template-columns:1fr 1fr; gap:8px; margin:12px 0; }
+.quick .btn { min-height:52px; }
+.upgrade-grid { display:grid; grid-template-columns:1fr 1fr; gap:8px; }
+.up-cat { background:#121a30; border:1px solid var(--line); border-radius:14px; padding:10px; text-align:left; }
+.ach-grid { display:grid; grid-template-columns:1fr 1fr; gap:8px; }
+.ach { background:#121a30; border-radius:14px; padding:10px; border:1px solid var(--line); min-height:88px; }
+.ach.on { border-color:#f5c14a55; }
+.lb-row { display:grid; grid-template-columns:28px 1fr auto; gap:8px; align-items:center; padding:10px 0; border-bottom:1px solid var(--line); }
+.lb-row.you { color:var(--gold); }
+.daily-row { display:grid; grid-template-columns:repeat(7,1fr); gap:6px; }
+.day-box { border-radius:12px; padding:8px 4px; text-align:center; background:#121a30; border:1px solid var(--line); font-size:11px; }
+.day-box.claimed { background:#1d3a28; }
+.day-box.today { border-color:var(--gold); }
+.tutorial-mask { position:fixed; inset:0; background:rgba(0,0,0,.62); z-index:90; display:flex; align-items:flex-end; }
+.tutorial-card { width:100%; background:#141c32; padding:18px 16px calc(18px + var(--safe-b)); border-radius:20px 20px 0 0; border-top:1px solid var(--gold); }
+.welcome-back { text-align:center; }
+.welcome-back .big { font-size:28px; color:var(--ok); font-weight:800; }
+.hq-art { height:92px; border-radius:16px; display:grid; place-items:center; font-size:42px; background:linear-gradient(180deg,#1c2744,#10182c); margin-bottom:8px; }
+.color-dots { display:flex; gap:8px; flex-wrap:wrap; }
+.swatch { width:32px; height:32px; border-radius:50%; border:2px solid #fff3; }
+.swatch.on { border-color:var(--gold); }

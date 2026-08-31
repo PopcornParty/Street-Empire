@@ -1,0 +1,20 @@
+.city-wrap { display:flex; flex-direction:column; gap:10px; }
+.city-map { position:relative; height:min(68vh,640px); border-radius:18px; overflow:hidden; border:1px solid var(--line); background:#0a1428; touch-action:pan-x pan-y; }
+.city-scroll { width:920px; height:720px; position:relative; background:linear-gradient(rgba(255,255,255,.03) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.03) 1px, transparent 1px), radial-gradient(circle at 20% 30%, #13203c, #0a1428 55%); background-size:40px 40px, 40px 40px, auto; }
+.district { position:absolute; border-radius:16px; padding:8px; border:1px solid rgba(255,255,255,.12); background:rgba(20,32,58,.72); overflow:hidden; }
+.district.locked { background:rgba(8,10,18,.75); }
+.district h4 { margin:0 0 6px; font-size:11px; letter-spacing:.6px; }
+.district .plots { display:grid; grid-template-columns:repeat(3,1fr); gap:6px; }
+.plot { height:42px; border-radius:8px; background:#1a2744; display:grid; place-items:center; font-size:16px; border:1px solid rgba(255,255,255,.08); }
+.plot.owned { background:linear-gradient(180deg,#2a3d28,#1d2c22); }
+.plot.up2 { background:linear-gradient(180deg,#3a4d38,#243428); }
+.plot.up3 { background:linear-gradient(180deg,#4a5d2a,#2a3a20); }
+.plot.empty { color:#5b6a8a; }
+.road-h,.road-v { position:absolute; background:#2a3148; }
+.road-h { height:10px; } .road-v { width:10px; }
+.npc { position:absolute; width:8px; height:8px; border-radius:50%; background:#f5c14a; animation:npcWalk 3.4s ease-in-out infinite; }
+.car { position:absolute; width:16px; height:8px; border-radius:3px; background:#4de2c8; animation:carDrive 7s linear infinite; }
+.skyline { position:absolute; left:0; right:0; bottom:0; height:46px; pointer-events:none; animation:skylinePulse 4s ease-in-out infinite; }
+.district.dev-1 { box-shadow:inset 0 0 30px rgba(77,226,200,.12); }
+.district.dev-2 { box-shadow:inset 0 0 40px rgba(245,193,74,.16); }
+.district.dev-3 { box-shadow:inset 0 0 50px rgba(139,124,255,.2); }
