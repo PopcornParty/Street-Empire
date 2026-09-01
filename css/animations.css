@@ -1,13 +1,57 @@
+@keyframes riseIn { from { transform: translateY(8px); opacity: 0; } to { transform: none; opacity: 1; } }
 @keyframes slideDown { from { transform: translateY(-12px); opacity: 0; } to { transform: none; opacity: 1; } }
 @keyframes pop { 0% { transform: scale(.86); opacity: 0; } 70% { transform: scale(1.04); } 100% { transform: scale(1); opacity: 1; } }
-@keyframes pulseGold { 0%,100% { box-shadow: 0 0 0 0 rgba(245,193,74,.45);} 50% { box-shadow: 0 0 0 10px rgba(245,193,74,0);} }
-@keyframes floatUp { from { transform: translateY(0); opacity:1;} to { transform: translateY(-40px); opacity:0;} }
-@keyframes npcWalk { 0%{transform:translate(0,0);} 50%{transform:translate(18px,-8px);} 100%{transform:translate(0,0);} }
-@keyframes carDrive { 0%{left:-8%;} 100%{left:108%;} }
-@keyframes skylinePulse { 0%,100%{filter:brightness(1);} 50%{filter:brightness(1.18);} }
-@keyframes unlockBurst { 0%{transform:scale(.6);opacity:0;} 40%{transform:scale(1.05);opacity:1;} 100%{transform:scale(1);} }
-.celebrate { animation: pop .4s ease; }
+@keyframes pulseGold {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(245, 193, 74, 0.45); }
+  50% { box-shadow: 0 0 0 10px rgba(245, 193, 74, 0); }
+}
+@keyframes floatUp {
+  from { transform: translateY(0); opacity: 1; }
+  to { transform: translateY(-40px); opacity: 0; }
+}
+@keyframes shimmer {
+  0% { background-position: 0% 50%; }
+  100% { background-position: 200% 50%; }
+}
+@keyframes npcWalk {
+  0% { transform: translate(0, 0); }
+  50% { transform: translate(18px, -8px); }
+  100% { transform: translate(0, 0); }
+}
+@keyframes carDrive {
+  0% { left: -8%; }
+  100% { left: 108%; }
+}
+@keyframes skylinePulse {
+  0%, 100% { filter: brightness(1); }
+  50% { filter: brightness(1.18); }
+}
+@keyframes unlockBurst {
+  0% { transform: scale(.6); opacity: 0; }
+  40% { transform: scale(1.05); opacity: 1; }
+  100% { transform: scale(1); }
+}
+
+.celebrate { animation: pop 0.4s ease; }
 .pulse { animation: pulseGold 1.6s infinite; }
+.fx-cash {
+  position: absolute; color: #53d48a; font-weight: 800; animation: floatUp 0.9s ease forwards;
+}
 #fx-host .level-banner { pointer-events: auto; }
-.level-banner { position:absolute; inset:0; display:grid; place-items:center; background:rgba(4,8,18,.72); }
-.level-banner .inner { animation:unlockBurst .55s ease; background:linear-gradient(135deg,#1b1633,#122033); border:1px solid rgba(245,193,74,.4); padding:22px; border-radius:20px; text-align:center; min-width:240px; }
+.level-banner {
+  position: absolute; inset: 0; display: grid; place-items: center;
+  background: rgba(4, 8, 18, 0.72);
+}
+.level-banner .inner {
+  animation: unlockBurst 0.55s ease;
+  background: linear-gradient(135deg, #1b1633, #122033);
+  border: 1px solid rgba(245,193,74,.4);
+  padding: 22px; border-radius: 20px; text-align: center; min-width: 240px;
+}
+.highlight-ring {
+  outline: 3px solid var(--gold);
+  outline-offset: 3px;
+  animation: pulseGold 1.2s infinite;
+  border-radius: 16px;
+}
+.num-flash { color: var(--ok); transition: color 0.4s; }

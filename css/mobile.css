@@ -1,7 +1,8 @@
 @media (max-width: 899px) {
   .sidebar { display: none; }
   .bottom-nav { display: flex; }
-  .screen-host { padding-bottom: 8px; }
+  .screen-host { padding: 10px 12px 14px; }
+  .h1 { font-size: 20px; }
   .btn, .nav-btn, .plot, .tab { touch-action: manipulation; }
 }
 
