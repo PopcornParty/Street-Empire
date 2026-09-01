@@ -3,54 +3,30 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=1" />
-  <meta name="theme-color" content="#0b1020" />
+  <meta name="theme-color" content="#08101c" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
-  <meta name="mobile-web-app-capable" content="yes" />
   <title>STREET EMPIRE</title>
-  <link rel="stylesheet" href="css/main.css" />
-  <link rel="stylesheet" href="css/animations.css" />
-  <link rel="stylesheet" href="css/map.css" />
-  <link rel="stylesheet" href="css/menus.css" />
-  <link rel="stylesheet" href="css/mobile.css" />
-  <link rel="stylesheet" href="css/desktop.css" />
+  <link rel="stylesheet" href="css/app.css" />
 </head>
 <body>
   <div id="app">
     <header class="topbar">
+      <button class="logo" id="logo-btn" type="button" aria-label="Street Empire">SE</button>
       <div class="brand">
-        <span class="logo-mark">SE</span>
-        <div>
-          <strong>STREET EMPIRE</strong>
-          <small id="empire-title">Beginner</small>
-        </div>
+        <strong>STREET EMPIRE</strong>
+        <small id="rank-label">Starter</small>
       </div>
-      <div class="top-stats">
-        <button class="stat-chip" id="cash-chip" type="button" title="Cash">
-          <span class="chip-label">CASH</span>
-          <span class="chip-value" id="cash-display">$10,000</span>
-        </button>
-        <button class="stat-chip" id="income-chip" type="button" title="Income">
-          <span class="chip-label">/HR</span>
-          <span class="chip-value" id="income-display">$0</span>
-        </button>
+      <div class="chips">
+        <div class="chip"><span>CASH</span><b id="cash-label">$10,000</b></div>
+        <div class="chip"><span>/HR</span><b id="rate-label">$0</b></div>
       </div>
     </header>
-
-    <aside class="sidebar" id="sidebar">
-      <nav class="side-nav" id="side-nav"></nav>
-    </aside>
-
-    <main class="screen-host" id="screen-host"></main>
-
-    <nav class="bottom-nav" id="bottom-nav"></nav>
-
-    <div id="toast-host" class="toast-host" aria-live="polite"></div>
-    <div id="modal-host"></div>
-    <div id="tutorial-host"></div>
-    <div id="fx-host"></div>
+    <main id="view" class="view"></main>
+    <nav class="dock" id="dock"></nav>
   </div>
-  <div id="admin-host"></div>
-
-  <script type="module" src="js/main.js"></script>
+  <div id="sheet" hidden></div>
+  <div id="toasts"></div>
+  <div id="admin" hidden></div>
+  <script src="js/app.js"></script>
 </body>
 </html>
