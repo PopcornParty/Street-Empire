@@ -1,29 +1,277 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=1" />
-  <meta name="theme-color" content="#0a1220" />
-  <meta name="apple-mobile-web-app-capable" content="yes" />
-  <title>Street Empire</title>
-  <link rel="stylesheet" href="css/app.css" />
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,maximum-scale=1"/>
+<meta name="theme-color" content="#071018"/>
+<title>Street Empire</title>
+<style>
+:root{--bg:#071018;--card:#121c2e;--line:rgba(255,255,255,.1);--gold:#e8c36a;--mint:#3ad7b8;--txt:#f4f7ff;--mute:#8b96ae;--st:env(safe-area-inset-top,0px);--sb:env(safe-area-inset-bottom,0px)}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;height:100%;background:var(--bg);color:var(--txt);font-family:system-ui,-apple-system,Segoe UI,sans-serif}
+body{overflow:hidden}
+button{font:inherit;color:inherit;border:0;background:none}
+#app{height:100%;display:grid;grid-template-rows:calc(56px + var(--st)) minmax(0,1fr) calc(66px + var(--sb));background:radial-gradient(700px 240px at 100% 0,rgba(232,195,106,.14),transparent 50%),#071018}
+.top{display:flex;align-items:center;gap:10px;padding:calc(8px + var(--st)) 12px 8px;border-bottom:1px solid var(--line);background:#0b1422}
+.mark{width:36px;height:36px;border-radius:10px;font-weight:800;background:linear-gradient(135deg,var(--gold),#d27a2c);color:#1a1204}
+.brand b{display:block;font-size:11px;letter-spacing:1.5px}
+.brand s{font-size:11px;color:var(--mute);text-decoration:none}
+.net{margin-left:auto;color:var(--gold);font-weight:800}
+#view{overflow:auto;padding:12px;-webkit-overflow-scrolling:touch}
+#dock{display:flex;border-top:1px solid var(--line);background:#0b1422;padding-bottom:var(--sb)}
+#dock button{flex:1;min-height:60px;color:var(--mute);font-size:10px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px}
+#dock button.on{color:var(--gold)}
+.board{text-align:center;padding:16px 10px;border-radius:18px;border:1px solid var(--line);background:linear-gradient(180deg,#182438,#101828);margin-bottom:10px}
+.board .lbl{font-size:11px;color:var(--mute);letter-spacing:1px}
+.board .big{font-size:32px;font-weight:800;color:var(--gold);margin:6px 0}
+.tap{width:200px;height:200px;margin:10px auto;border-radius:50%;font-weight:800;font-size:20px;background:radial-gradient(circle at 30% 28%,#4ae0c2,#16586a 58%,#102838);box-shadow:0 12px 28px rgba(58,215,184,.22)}
+.tap:active{transform:scale(.96)}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.st{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:10px}
+.st span{display:block;font-size:10px;color:var(--mute)}
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:12px;margin-bottom:8px}
+.item{display:grid;grid-template-columns:44px 1fr auto;gap:8px;align-items:center;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:10px;margin-bottom:8px}
+.ico{width:44px;height:44px;border-radius:12px;display:grid;place-items:center;background:#182438;font-size:22px}
+.btn{min-height:42px;border-radius:12px;padding:8px 12px;font-weight:700;background:rgba(255,255,255,.06);border:1px solid var(--line)}
+.btn.g{background:linear-gradient(135deg,var(--gold),#e08a32);color:#1a1204;border:0}
+.btn.m{background:linear-gradient(135deg,var(--mint),#2aa8d6);color:#04141a;border:0}
+.btn.d{background:#3a1520;color:#ff8aa0}
+.btn:disabled{opacity:.4}
+.muted{color:var(--mute);font-size:12px}
+.row{display:flex;justify-content:space-between;align-items:center}
+.price{color:var(--gold);font-weight:700}
+.bar{height:7px;background:#1a2438;border-radius:99px;overflow:hidden;margin:8px 0}
+.bar>i{display:block;height:100%;background:linear-gradient(90deg,var(--mint),var(--gold))}
+.chips{display:flex;gap:6px;overflow:auto;padding-bottom:8px}
+.chip{flex:0 0 auto;padding:7px 12px;border-radius:999px;background:rgba(255,255,255,.06);color:var(--mute);font-size:12px;font-weight:700}
+.chip.on{background:var(--gold);color:#1a1204}
+input{width:100%;padding:11px;border-radius:12px;background:#0b1220;border:1px solid var(--line);color:var(--txt);margin:6px 0}
+#toasts{position:fixed;left:12px;right:12px;top:calc(64px + var(--st));z-index:50;pointer-events:none}
+.toast{background:#172033;border:1px solid var(--line);border-radius:12px;padding:10px;margin-bottom:8px}
+#admin{position:fixed;inset:0;z-index:2147483000;background:#071018;display:none;flex-direction:column}
+#admin.show{display:flex}
+.at{display:flex;justify-content:space-between;align-items:center;padding:calc(12px + var(--st)) 14px;border-bottom:1px solid #e8c36a55}
+.ab{flex:1;overflow:auto;padding:14px;display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.err{padding:16px;color:#ff8aa0}
+@media(min-width:900px){
+#app{grid-template-columns:200px 1fr;grid-template-rows:calc(56px + var(--st)) 1fr;grid-template-areas:"t t" "d v"}
+.top{grid-area:t}#view{grid-area:v}#dock{grid-area:d;flex-direction:column;padding:10px;border-top:0;border-right:1px solid var(--line)}
+#dock button{flex-direction:row;gap:8px;font-size:13px;min-height:44px}
+}
+</style>
 </head>
 <body>
-  <div id="app">
-    <header class="top">
-      <button class="mark" id="logo" type="button">SE</button>
-      <div>
-        <div class="title">STREET EMPIRE</div>
-        <div class="sub" id="title-line">Aurelia · Starter</div>
-      </div>
-      <div class="net" id="worth-chip">$0</div>
-    </header>
-    <main id="view"></main>
-    <nav id="dock"></nav>
-  </div>
-  <div id="sheet" hidden></div>
-  <div id="toasts"></div>
-  <div id="admin" hidden></div>
-  <script src="js/app.js"></script>
+<div id="app">
+  <header class="top">
+    <div class="mark">SE</div>
+    <div class="brand"><b>STREET EMPIRE</b><s id="rank">Aurelia · Starter</s></div>
+    <div class="net" id="worth">$0</div>
+  </header>
+  <main id="view"><div class="muted">Loading…</div></main>
+  <nav id="dock"></nav>
+</div>
+<div id="toasts"></div>
+<div id="admin"></div>
+<script>
+(function(){
+try{
+var KEY="se-one-v1", CODE="FERRARI1";
+var RANKS=[[0,"Starter"],[80,"Clerk"],[220,"Owner"],[500,"Investor"],[1100,"Director"],[2200,"Tycoon"],[4500,"Mogul"],[8000,"Magnate"]];
+var CATS=["Shop","Works","Kitchen","Builder","Motors","Labs","Bank","Energy"];
+var BIZ=[
+ {id:"kiosk",n:"Lane Kiosk",i:"🏪",c:"Shop",p:400,h:18,max:20},
+ {id:"mart",n:"Night Mart",i:"🛒",c:"Shop",p:2200,h:70,max:20},
+ {id:"mall",n:"Arcade Hall",i:"🏬",c:"Shop",p:28000,h:620,max:22},
+ {id:"shed",n:"River Shed",i:"🏭",c:"Works",p:3500,h:95,max:20},
+ {id:"plant",n:"Forge Plant",i:"⚙️",c:"Works",p:42000,h:880,max:22},
+ {id:"cart",n:"Corner Cart",i:"🌮",c:"Kitchen",p:700,h:28,max:18},
+ {id:"cafe",n:"Harbor Roast",i:"☕",c:"Kitchen",p:2600,h:82,max:20},
+ {id:"hall",n:"Goldfork",i:"🍽️",c:"Kitchen",p:36000,h:760,max:22},
+ {id:"yard",n:"Brick Yard",i:"🧱",c:"Builder",p:8000,h:160,max:20},
+ {id:"crew",n:"Skyline Crew",i:"🏗️",c:"Builder",p:64000,h:1200,max:22},
+ {id:"lot",n:"Apex Lot",i:"🚗",c:"Motors",p:18000,h:380,max:20},
+ {id:"show",n:"Crown Motors",i:"🏎️",c:"Motors",p:120000,h:2100,max:22},
+ {id:"desk",n:"Pixel Desk",i:"💻",c:"Labs",p:24000,h:520,max:20},
+ {id:"labs",n:"Lumen Labs",i:"🖥️",c:"Labs",p:180000,h:3200,max:22},
+ {id:"vault",n:"Ledger Vault",i:"🏦",c:"Bank",p:90000,h:1600,max:24},
+ {id:"hold",n:"Aurelia Hold",i:"🏛️",c:"Bank",p:750000,h:9800,max:24},
+ {id:"well",n:"Helios Yard",i:"⛽",c:"Energy",p:220000,h:3800,max:24},
+ {id:"field",n:"North Field",i:"🛢️",c:"Energy",p:1800000,h:24000,max:24}
+];
+var HOMES=[
+ {id:"studio",n:"Canal Studio",i:"🏠",p:12000,r:55,max:5},
+ {id:"row",n:"Maple Row",i:"🏡",p:28000,r:120,max:5},
+ {id:"loft",n:"Dock Loft",i:"🪟",p:76000,r:280,max:5},
+ {id:"suite",n:"Ledger Suite",i:"🏢",p:180000,r:620,max:5},
+ {id:"villa",n:"Vista Villa",i:"🌅",p:420000,r:1400,max:5},
+ {id:"manor",n:"Crown Manor",i:"🏰",p:1600000,r:4800,max:5}
+];
+var CARS=[
+ {id:"city",n:"City Hatch",i:"🚗",p:8000,h:12},
+ {id:"sedan",n:"Aurelia Sedan",i:"🚘",p:28000,h:40},
+ {id:"sport",n:"Ridge Sport",i:"🏎️",p:120000,h:140},
+ {id:"limo",n:"Night Limo",i:"🚖",p:260000,h:280},
+ {id:"jet",n:"Sky Runner",i:"✈️",p:1800000,h:1600}
+];
+var TICK=[{id:"AUR",n:"Aurelia Goods"},{id:"NTH",n:"Northlight"},{id:"HLS",n:"Helios Energy"},{id:"PIX",n:"Pixel Desk"},{id:"CRW",n:"Crown Hold"},{id:"RVR",n:"Riverline"}];
+var JOBS=[
+ ["j1","First tap","Tap the earn pad.",function(s){return s.stats.taps>=1;},40,4],
+ ["j2","Open a shop","Own any business.",function(s){return Object.keys(s.biz).length>=1;},80,6],
+ ["j3","House keys","Buy a home.",function(s){return Object.keys(s.homes).length>=1;},90,6],
+ ["j4","Market ticket","Buy a share.",function(s){return Object.keys(s.shares).some(function(k){return s.shares[k]>0;});},70,5],
+ ["j5","Three shops","Own 3 businesses.",function(s){return Object.keys(s.biz).length>=3;},120,8],
+ ["j6","Wheels","Buy a vehicle.",function(s){return s.cars.length>=1;},80,6],
+ ["j7","Builder","Open a Builder firm.",function(s){return !!(s.biz.yard||s.biz.crew);},140,8],
+ ["j8","Banker","Open a bank.",function(s){return !!(s.biz.vault||s.biz.hold);},200,10]
+];
+function money(n){var a=Math.abs(n),s=n<0?"-":"";if(a>=1e9)return s+"$"+(a/1e9).toFixed(2)+"B";if(a>=1e6)return s+"$"+(a/1e6).toFixed(2)+"M";if(a>=1e4)return s+"$"+(a/1e3).toFixed(1)+"K";return s+"$"+Math.floor(a).toLocaleString();}
+function def(id){for(var i=0;i<BIZ.length;i++)if(BIZ[i].id===id)return BIZ[i];}
+function rate(b){return def(b.id).h*(1+(b.lv-1)*0.16);}
+function upCost(b){return Math.floor(def(b.id).p*0.32*Math.pow(1.2,b.lv-1));}
+function homeD(id){for(var i=0;i<HOMES.length;i++)if(HOMES[i].id===id)return HOMES[i];}
+function homeRate(h){return homeD(h.id).r*(1+h.imp*0.22);}
+function tapVal(s){return 1+s.tapLv*2+s.cars.length;}
+function hour(s){var n=0,k;for(k in s.biz)n+=rate(s.biz[k]);for(k in s.homes)n+=homeRate(s.homes[k]);for(var i=0;i<s.cars.length;i++){for(var j=0;j<CARS.length;j++)if(CARS[j].id===s.cars[i])n+=CARS[j].h;}return n;}
+function worth(s){var n=s.cash,k,i,j;for(k in s.biz)n+=def(k).p*s.biz[k].lv*0.7+s.biz[k].store;for(k in s.homes)n+=homeD(k).p;for(i=0;i<s.cars.length;i++)for(j=0;j<CARS.length;j++)if(CARS[j].id===s.cars[i])n+=CARS[j].p*0.6;for(i=0;i<TICK.length;i++)n+=(s.shares[TICK[i].id]||0)*s.px[TICK[i].id];return n;}
+function rank(s){var i=0,r;for(var x=0;x<RANKS.length;x++)if(s.xp>=RANKS[x][0])i=x;r=RANKS[i];var n=RANKS[i+1],span=n?n[0]-r[0]:1;return {i:i,name:r[1],pct:n?Math.min(1,(s.xp-r[0])/span):1};}
+var S,tab="earn",filter="All";
+function fresh(){var px={},i;for(i=0;i<TICK.length;i++)px[TICK[i].id]=20+Math.random()*40;return {cash:0,xp:0,tapLv:0,biz:{},homes:{},cars:[],shares:{},px:px,jobs:[],stats:{taps:0,earned:0},last:Date.now(),name:"Founder",build:null};}
+function load(){try{var raw=localStorage.getItem(KEY);S=raw?Object.assign(fresh(),JSON.parse(raw)):fresh();}catch(e){S=fresh();}}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(S));}catch(e){}}
+function toast(m){var h=document.getElementById("toasts"),e=document.createElement("div");e.className="toast";e.textContent=m;h.insertBefore(e,h.firstChild);setTimeout(function(){if(e.parentNode)e.parentNode.removeChild(e);},2600);}
+function tick(ms){var hr=ms/3600000,k,i,j,c;for(k in S.biz)S.biz[k].store+=rate(S.biz[k])*hr;for(k in S.homes)S.cash+=homeRate(S.homes[k])*hr;for(i=0;i<S.cars.length;i++)for(j=0;j<CARS.length;j++)if(CARS[j].id===S.cars[i])S.cash+=CARS[j].h*hr;for(i=0;i<TICK.length;i++){c=(Math.random()-0.48)*0.8;S.px[TICK[i].id]=Math.max(2,+(S.px[TICK[i].id]*(1+c/100)).toFixed(2));}if(S.build&&Date.now()>=S.build.done){S.cash+=S.build.pay;S.stats.earned+=S.build.pay;S.xp+=8;toast("Build finished +"+money(S.build.pay));S.build=null;}S.last=Date.now();}
+function scan(){for(var i=0;i<JOBS.length;i++){var j=JOBS[i];if(S.jobs.indexOf(j[0])<0&&j[3](S)){S.jobs.push(j[0]);S.cash+=j[4];S.xp+=j[5];toast("Job: "+j[1]+" +"+money(j[4]));}}}
+function collect(){var n=0,k;for(k in S.biz){n+=S.biz[k].store;S.biz[k].store=0;}if(n<1){toast("Nothing to collect");return;}S.cash+=n;S.stats.earned+=n;S.xp+=Math.max(1,Math.floor(n/4000));toast("Collected "+money(n));scan();paint();save();}
+function buyBiz(id){var b=def(id);if(!b||S.biz[id]||S.cash<b.p)return;S.cash-=b.p;S.biz[id]={id:id,lv:1,store:0};S.xp+=8;toast("Opened "+b.n);scan();paint();save();}
+function upBiz(id){var inst=S.biz[id],b=def(id);if(!inst||inst.lv>=b.max)return;var c=upCost(inst);if(S.cash<c){toast("Need "+money(c));return;}S.cash-=c;inst.lv++;S.xp+=4;toast(b.n+" lv "+inst.lv);scan();paint();save();}
+function buyHome(id){var h=homeD(id);if(!h||S.homes[id]||S.cash<h.p)return;S.cash-=h.p;S.homes[id]={id:id,imp:0};S.xp+=6;toast("Bought "+h.n);scan();paint();save();}
+function impHome(id){var h=S.homes[id],d=homeD(id);if(!h||h.imp>=d.max)return;var c=Math.floor(d.p*0.18*(h.imp+1));if(S.cash<c)return;S.cash-=c;h.imp++;S.xp+=3;toast(d.n+" improved");paint();save();}
+function buyCar(id){var c,i;for(i=0;i<CARS.length;i++)if(CARS[i].id===id)c=CARS[i];if(!c||S.cars.indexOf(id)>=0||S.cash<c.p)return;S.cash-=c.p;S.cars.push(id);S.xp+=5;toast("Parked "+c.n);scan();paint();save();}
+function buyShare(id){var cost=S.px[id];if(S.cash<cost)return;S.cash-=cost;S.shares[id]=(S.shares[id]||0)+1;scan();paint();save();}
+function sellShare(id){if(!(S.shares[id]>0))return;S.shares[id]--;S.cash+=S.px[id];paint();save();}
+function startBuild(){if(!S.biz.yard&&!S.biz.crew){toast("Open a Builder firm first");return;}if(S.build){toast("A job is already running");return;}var cost=S.biz.crew?6000:1800,pay=S.biz.crew?16000:4800,wait=S.biz.crew?25000:18000;if(S.cash<cost){toast("Need "+money(cost));return;}S.cash-=cost;S.build={done:Date.now()+wait,pay:pay};toast("Crew started a build");paint();save();}
+function paint(){
+  var r=rank(S);
+  document.getElementById("rank").textContent="Aurelia · "+r.name;
+  document.getElementById("worth").textContent=money(worth(S));
+  var dock=document.getElementById("dock");
+  var tabs=[["earn","💵","Earn"],["biz","🏢","Biz"],["home","🏠","Homes"],["mkt","📈","Market"],["life","✨","Life"]];
+  var html="",i;for(i=0;i<tabs.length;i++)html+='<button class="'+(tab===tabs[i][0]?"on":"")+'" data-t="'+tabs[i][0]+'" type="button"><span>'+tabs[i][1]+"</span>"+tabs[i][2]+"</button>";
+  dock.innerHTML=html;
+  var btns=dock.querySelectorAll("[data-t]");
+  for(i=0;i<btns.length;i++)btns[i].onclick=function(){tab=this.getAttribute("data-t");paint();};
+  var fn={earn:vEarn,biz:vBiz,home:vHome,mkt:vMkt,life:vLife};
+  document.getElementById("view").innerHTML=fn[tab]();
+  wire();
+}
+function vEarn(){
+  var stored=0,k,r=rank(S);for(k in S.biz)stored+=S.biz[k].store;
+  var jobs="",i,shown=0;for(i=0;i<JOBS.length&&shown<3;i++)if(S.jobs.indexOf(JOBS[i][0])<0){jobs+='<div class="muted" style="margin-top:6px">'+JOBS[i][1]+" · "+JOBS[i][2]+"</div>";shown++;}
+  if(!jobs)jobs='<div class="muted">Starter jobs done.</div>';
+  return '<section class="board"><div class="lbl">CASH ON HAND</div><div class="big">'+money(S.cash)+'</div><div class="muted">'+money(hour(S))+"/hr idle · tap "+money(tapVal(S))+'</div><button class="tap" id="tap" type="button">TAP</button></section>'+
+    '<div class="g2"><div class="st"><span>NET WORTH</span><b>'+money(worth(S))+'</b></div><div class="st"><span>STORED</span><b>'+money(stored)+'</b></div><div class="st"><span>RANK</span><b>'+r.name+'</b></div><div class="st"><span>FIRMS</span><b>'+Object.keys(S.biz).length+'</b></div></div>'+
+    '<div class="bar"><i style="width:'+Math.round(r.pct*100)+'%"></i></div>'+
+    '<div class="g2"><button class="btn m" data-a="collect" type="button">Collect firms</button><button class="btn g" data-a="tapup" type="button">Tap desk '+money(40+S.tapLv*55)+"</button></div>"+
+    (S.build?'<div class="card" style="margin-top:10px"><b>Build in progress</b><div class="muted">Payout '+money(S.build.pay)+"</div></div>":"")+
+    '<div class="card" style="margin-top:10px"><b>Jobs</b>'+jobs+"</div>";
+}
+function vBiz(){
+  var html='<div class="chips"><button class="chip '+(filter==="All"?"on":"")+'" data-f="All" type="button">All</button>',i,b,o;
+  for(i=0;i<CATS.length;i++)html+='<button class="chip '+(filter===CATS[i]?"on":"")+'" data-f="'+CATS[i]+'" type="button">'+CATS[i]+"</button>";
+  html+="</div>";
+  if(filter==="Builder"||S.biz.yard||S.biz.crew)html+='<button class="btn g" data-a="build" type="button" style="width:100%;margin-bottom:8px">'+(S.build?"Build running…":"Start a construction job")+"</button>";
+  for(i=0;i<BIZ.length;i++){b=BIZ[i];if(filter!=="All"&&b.c!==filter)continue;o=S.biz[b.id];
+    html+='<article class="item"><div class="ico">'+b.i+'</div><div><b>'+b.n+'</b><div class="muted">'+b.c+" · "+(o?("Lv "+o.lv+" · "+money(rate(o))+"/hr"):money(b.h)+"/hr")+"</div></div>";
+    if(o)html+='<button class="btn g" data-up="'+b.id+'" type="button">'+(o.lv>=b.max?"Max":money(upCost(o)))+"</button>";
+    else html+='<button class="btn g" data-buy="'+b.id+'" '+(S.cash<b.p?"disabled":"")+' type="button">'+money(b.p)+"</button>";
+    html+="</article>";
+  }
+  return html;
+}
+function vHome(){
+  var html="",i,h,o;for(i=0;i<HOMES.length;i++){h=HOMES[i];o=S.homes[h.id];
+    html+='<article class="item"><div class="ico">'+h.i+'</div><div><b>'+h.n+'</b><div class="muted">'+(o?("Imp "+o.imp+"/"+h.max+" · "+money(homeRate(o))+"/hr"):money(h.r)+"/hr rent")+"</div></div>";
+    if(o)html+='<button class="btn g" data-imp="'+h.id+'" type="button">'+(o.imp>=h.max?"Max":money(Math.floor(h.p*0.18*(o.imp+1))))+"</button>";
+    else html+='<button class="btn g" data-home="'+h.id+'" '+(S.cash<h.p?"disabled":"")+' type="button">'+money(h.p)+"</button>";
+    html+="</article>";
+  }
+  return html;
+}
+function vMkt(){
+  var html='<div class="muted" style="margin-bottom:8px">Prices drift every second. Buy low, sell later.</div>',i,t,have;
+  for(i=0;i<TICK.length;i++){t=TICK[i];have=S.shares[t.id]||0;
+    html+='<article class="card"><div class="row"><b>'+t.id+'</b><span class="price">'+money(S.px[t.id])+'</span></div><div class="muted">'+t.n+" · you hold "+have+'</div><div class="g2" style="margin-top:8px"><button class="btn g" data-bs="'+t.id+'" type="button">Buy 1</button><button class="btn" data-ss="'+t.id+'" type="button">Sell 1</button></div></article>';
+  }
+  return html;
+}
+function vLife(){
+  var html='<div class="card"><label class="muted">Display name</label><input id="nm" value="'+S.name+'" maxlength="16"><label class="muted">Access code</label><input id="cd" placeholder="Enter code" autocomplete="off"><button class="btn g" data-a="code" type="button">Submit code</button></div><h3>Garage</h3>',i,c,have;
+  for(i=0;i<CARS.length;i++){c=CARS[i];have=S.cars.indexOf(c.id)>=0;
+    html+='<article class="item"><div class="ico">'+c.i+'</div><div><b>'+c.n+'</b><div class="muted">+'+money(c.h)+'/hr</div></div><button class="btn g" data-car="'+c.id+'" '+(have||S.cash<c.p?"disabled":"")+' type="button">'+(have?"Owned":money(c.p))+"</button></article>";
+  }
+  html+='<button class="btn d" data-a="reset" type="button" style="width:100%;margin-top:8px">Reset save</button>';
+  return html;
+}
+function bind(sel,fn){var list=document.getElementById("view").querySelectorAll(sel),i;for(i=0;i<list.length;i++)list[i].onclick=fn;}
+function wire(){
+  var tap=document.getElementById("tap");
+  if(tap)tap.onclick=function(){S.cash+=tapVal(S);S.stats.taps++;S.stats.earned+=tapVal(S);S.xp+=0.04;this.style.transform="scale(.94)";var t=this;setTimeout(function(){t.style.transform="";},80);var big=document.querySelector(".big");if(big)big.textContent=money(S.cash);scan();};
+  bind("[data-f]",function(){filter=this.getAttribute("data-f");paint();});
+  bind("[data-buy]",function(){buyBiz(this.getAttribute("data-buy"));});
+  bind("[data-up]",function(){upBiz(this.getAttribute("data-up"));});
+  bind("[data-home]",function(){buyHome(this.getAttribute("data-home"));});
+  bind("[data-imp]",function(){impHome(this.getAttribute("data-imp"));});
+  bind("[data-car]",function(){buyCar(this.getAttribute("data-car"));});
+  bind("[data-bs]",function(){buyShare(this.getAttribute("data-bs"));});
+  bind("[data-ss]",function(){sellShare(this.getAttribute("data-ss"));});
+  bind("[data-a]",function(){act(this.getAttribute("data-a"));});
+  var nm=document.getElementById("nm");if(nm)nm.onchange=function(){S.name=this.value.slice(0,16)||"Founder";save();};
+}
+function act(a){
+  if(a==="collect")collect();
+  if(a==="tapup"){var c=40+S.tapLv*55;if(S.cash<c){toast("Need "+money(c));return;}S.cash-=c;S.tapLv++;toast("Tap is now "+money(tapVal(S)));paint();save();}
+  if(a==="build")startBuild();
+  if(a==="code"){var box=document.getElementById("cd");tryCode(box?box.value:"");}
+  if(a==="reset"){if(confirm("Delete this save?")){S=fresh();save();paint();}}
+}
+function tryCode(v){
+  if(String(v||"").replace(/^\s+|\s+$/g,"").toUpperCase()===CODE){
+    var a=document.activeElement;if(a&&a.blur)a.blur();
+    setTimeout(openAdmin,80);
+    return true;
+  }
+  toast("Wrong code");
+  return false;
+}
+function pin(el){
+  var vv=window.visualViewport,t=0,l=0,w=window.innerWidth,h=window.innerHeight;
+  if(vv){t=Math.round(vv.offsetTop);l=Math.round(vv.offsetLeft);w=Math.round(vv.width);h=Math.round(vv.height);}
+  el.style.cssText="display:flex;position:fixed;z-index:2147483000;top:"+t+"px;left:"+l+"px;width:"+w+"px;height:"+h+"px;background:#071018;flex-direction:column";
+}
+function openAdmin(){
+  var el=document.getElementById("admin");
+  el.className="show";
+  pin(el);
+  el.innerHTML='<div class="at"><div><div class="muted">CONSOLE</div><h3 style="margin:0;color:var(--gold)">FERRARI1</h3></div><button class="btn g" id="ax" type="button">Close</button></div><div class="ab"><button class="btn" data-c="100000" type="button">+$100K</button><button class="btn" data-c="1000000" type="button">+$1M</button><button class="btn" data-c="100000000" type="button">+$100M</button><button class="btn" data-x="1" type="button">+500 XP</button><button class="btn d" data-r="1" type="button">Reset</button></div>';
+  document.getElementById("ax").onclick=closeAdmin;
+  var list=el.querySelectorAll("[data-c]"),i;
+  for(i=0;i<list.length;i++)list[i].onclick=function(){S.cash+=Number(this.getAttribute("data-c"));save();paint();openAdmin();};
+  el.querySelector("[data-x]").onclick=function(){S.xp+=500;save();paint();openAdmin();};
+  el.querySelector("[data-r]").onclick=function(){if(confirm("Reset?")){S=fresh();closeAdmin();save();paint();}};
+}
+function closeAdmin(){var el=document.getElementById("admin");el.className="";el.innerHTML="";el.removeAttribute("style");}
+function boot(){
+  load();
+  var away=Date.now()-S.last;
+  if(away>12000){var cap=Math.min(away,8*3600000),before=S.cash,k;for(k in S.biz)before+=S.biz[k].store;tick(cap);var after=S.cash;for(k in S.biz)after+=S.biz[k].store;if(after-before>1)toast("While away "+money(after-before));}
+  scan();paint();
+  setInterval(function(){tick(1000);if(tab==="mkt")paint();else{var big=document.querySelector(".big");if(big)big.textContent=money(S.cash);document.getElementById("worth").textContent=money(worth(S));}save();},1000);
+}
+boot();
+}catch(err){
+  document.getElementById("view").innerHTML='<div class="err">Game error: '+String(err)+"</div>";
+}
+})();
+</script>
 </body>
 </html>
